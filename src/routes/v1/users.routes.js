@@ -89,5 +89,22 @@ router.delete('/:id', (req, res) => {
   users.splice(index, 1);
   res.status(204).send();
 });
+// GET /api/v1/users?role=user&search=Carlos
+router.get('/', (req, res) => {
+  const { role, search } = req.query;
+  let result = [...users];
+
+  if (role) {
+    result = result.filter(u => u.role === role);
+  }
+
+  if (search) {
+    result = result.filter(u =>
+      u.name.toLowerCase().includes(search.toLowerCase())
+    );
+  }
+
+  res.status(200).json(result);
+});
 
 module.exports = router;
